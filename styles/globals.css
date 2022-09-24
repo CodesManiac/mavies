@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base{
+    body{
+        @apply bg-main-background md:h-screen;
+    }
+}
+@layer components{
+    .text-gradient{
+        font-size: 30px;
+        background: -webkit-linear-gradient(green, red);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
