@@ -1,14 +1,32 @@
 import Link from 'next/link';
 import { Notification, SearchNormal1, User } from 'iconsax-react';
+import { useEffect, useState } from 'react';
 
 const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
-    <header className='container mx-auto p-6'>
+    <header className={`${isScrolled && 'bg-main-background'}`}>
       <div className='flex justify-between items-center '>
         <h1 className='bg-clip-text font-bold text-xl text-transparent bg-gradient-to-r from-[#ea4996] to-[#8d56f4]'>
           Mavies
         </h1>
-        <div className='hidden md:flex md:gap-5 text-white'>
+        <div className='hidden md:flex md:gap-5'>
           {[
             ['Home', '/'],
             ['Movies', '/'],
