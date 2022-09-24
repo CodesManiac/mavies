@@ -4,8 +4,11 @@
 
 @layer base{
     body{
-        @apply bg-main-background md:h-screen;
+        @apply bg-main-background md:h-screen text-white;
     }
+    header {
+        @apply top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-all lg:px-10 lg:py-6;
+      }
 }
 @layer components{
     .text-gradient{
