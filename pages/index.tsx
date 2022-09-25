@@ -26,17 +26,15 @@ const Home = ({
   romanceMovies,
   documentaries,
 }: Props) => {
-  console.log('netflix is', netflixOriginals);
   return (
-    <div className='relative h-screen lg:h-[140vh] bg-main-background'>
+    <div className='relative h-screen lg:h-[140vh] bg-gradient-to-br from-primary/10 to-[#010511]'>
       <Head>
         <title>Mavies</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      {/* header */}
+
       <Header />
-      <main>
-        {/* banner */}
+      <main className='relative pl-4 pb-24 lg:space-y-24 lg:pl-16'>
         <Banner netflixOriginals={netflixOriginals} />
         <section>
           {/* Row */}
