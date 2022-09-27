@@ -1,6 +1,7 @@
 import { ArrowCircleLeft, ArrowCircleRight } from 'iconsax-react';
 import React from 'react';
 import { Movie } from '../typings';
+import Thumbnail from './Thumbnail';
 
 interface Props {
   title: string;
@@ -19,7 +20,11 @@ const Row = ({ title, movies }: Props) => {
           color='#FFffff'
           className='row-arrow left-2'
         />
-
+        <div className='flex items-center space-x-0.5 overflow-x-scroll scrollbar-hide md:space-x-2.5 md:p-2'>
+          {movies.map((movie) => (
+            <Thumbnail key={movie.id} movie={movie} />
+          ))}
+        </div>
         <ArrowCircleRight
           size='32'
           color='#ffffff'
