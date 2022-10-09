@@ -6,7 +6,7 @@
 @layer base{
     body{
         font-family: 'Montserrat', sans-serif;
-        @apply bg-primary text-white !scrollbar-thin !scrollbar-track-transparent !scrollbar-thumb-primary;
+        @apply bg-main-background text-white !scrollbar-thin !scrollbar-track-transparent !scrollbar-thumb-primary;
     }
     header {
         @apply fixed top-0 z-50 flex w-full items-center justify-between px-4 py-4 transition-all lg:px-10 lg:py-6;
