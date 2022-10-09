@@ -2,6 +2,11 @@ export interface Genre {
     id: number
     name: string
 }
+export interface headerData {
+    id: number,
+    title: string,
+    url: string,
+}
 
 export interface Movie {
     title: string

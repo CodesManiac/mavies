@@ -1,10 +1,37 @@
 import Link from 'next/link';
 import { Notification, SearchNormal1, User } from 'iconsax-react';
 import { useEffect, useState } from 'react';
+import { headerData } from '../typings';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-
+  const headerData: headerData[] = [
+    {
+      id: 1,
+      title: 'Home',
+      url: '/',
+    },
+    {
+      id: 2,
+      title: 'Movies',
+      url: '/',
+    },
+    {
+      id: 3,
+      title: 'Tv Shows',
+      url: '/',
+    },
+    {
+      id: 4,
+      title: 'New & Popular',
+      url: '/',
+    },
+    {
+      id: 5,
+      title: 'My List',
+      url: '/',
+    },
+  ];
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -27,19 +54,13 @@ const Header = () => {
           Mavies
         </h1>
         <div className='hidden md:flex md:gap-5'>
-          {[
-            ['Home', '/'],
-            ['Movies', '/'],
-            ['Tv Shows', '/'],
-            ['New & Popular', '/'],
-            ['My List', '/'],
-          ].map(([title, url]) => (
+          {headerData.map((data) => (
             <a
-              key={url}
-              href={url}
+              key={data.id}
+              href={data.url}
               className='py-2 px-4 rounded-lg font-semibold hover:-translate-y-1 hover:scale-110 hover:bg-dark duration-300'
             >
-              {title}
+              {data.title}
             </a>
           ))}
         </div>

@@ -15,7 +15,7 @@ const Banner = ({ netflixOriginals }: Props) => {
       netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)]
     );
   }, [netflixOriginals]);
-  console.log(movie);
+  // console.log(movie);
   return (
     <div className='flex flex-col space-y-2 py-16 md:space-y-4 lg:h-[65vh] lg:justify-end lg:pb-12'>
       <div className='absolute  top-0 left-0 h-[95vh] -z-10 w-screen'>
@@ -23,6 +23,7 @@ const Banner = ({ netflixOriginals }: Props) => {
           src={`${baseUrl}${movie?.backdrop_path || movie?.poster_path}`}
           layout='fill'
           objectFit='cover'
+          priority
         />
       </div>
       <h1 className='font-bold text-2xl md:text-4xl lg:text-7xl '>
