@@ -11,6 +11,9 @@ module.exports = {
       white: '#ffffff',
       transparent: 'transparent',
     },
+    fontFamily: {
+      Montserrat: ['Montserrat', 'sans-serif'],
+    },
     extend: {
       backgroundImage: {
         'main-background': 'linear-gradient(135deg, #34275d 0%, #1b1b1b 100%)',

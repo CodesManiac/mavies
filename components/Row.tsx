@@ -33,7 +33,7 @@ const Row = ({ title, movies }: Props) => {
         <ArrowCircleLeft
           size='32'
           color='#FFffff'
-          className='row-arrow left-2'
+          className={`row-arrow left-2 ${!slideIsMoved && 'hidden'}`}
           onClick={() => handleClick('left')}
         />
         <div
