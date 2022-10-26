@@ -24,5 +24,8 @@
       }
     .row-arrow{
         @apply absolute top-0 bottom-0 z-40 m-auto cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100;
+    }
+    .login-input{
+        @apply flex  sm:max-w-sm md:w-96 items-center border gap-4 rounded-lg p-4;
     }  
 }
