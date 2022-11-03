@@ -1,10 +1,12 @@
 import Head from 'next/head';
+import { useState } from 'react';
 import Banner from '../components/Banner';
 import Header from '../components/Header';
 import Row from '../components/Row';
+import userAuth from '../hooks/userAuth';
 import { Movie } from '../typings';
 import requests from '../utils/requests';
-
+import { SpinnerDotted } from 'spinners-react';
 interface Props {
   netflixOriginals: Movie[];
   trendingNow: Movie[];
@@ -25,6 +27,14 @@ const Home = ({
   romanceMovies,
   documentaries,
 }: Props) => {
+  const { loading } = userAuth();
+  const spinnerStyle = {
+    color: '#ffffff',
+    display: 'grid',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+  if (loading) return <SpinnerDotted style={spinnerStyle} />;
   return (
     <div className='relative h-screen lg:h-[140vh] bg-gradient-to-br from-primary/10 to-[#010511]'>
       <Head>
@@ -33,6 +43,7 @@ const Home = ({
       </Head>
 
       <Header />
+
       <main className='relative pl-4 md:pb-24 lg:space-y-24 lg:pl-16'>
         <Banner netflixOriginals={netflixOriginals} />
         <section className=' md:space-y-24'>
