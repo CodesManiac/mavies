@@ -2,6 +2,7 @@ import { DirectInbox, SecuritySafe } from 'iconsax-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import userAuth from '../hooks/userAuth';
 
 type FormData = {
   email: string;
@@ -15,12 +16,12 @@ const login = () => {
     reset,
   } = useForm<FormData>();
   const [login, setLogin] = useState(false);
-
+  const { signIn, signUp } = userAuth();
   const onSubmit: SubmitHandler<FormData> = async ({ email, password }) => {
     if (login) {
-      await console.log('sign in');
+      await signIn(email, password);
     } else {
-      await console.log('sign up');
+      await signUp(email, password);
     }
   };
 
@@ -76,6 +77,7 @@ const login = () => {
             <button
               type='submit'
               className=' font-semibold hover:text-dark text-base rounded-2xl bg-main-background text-white hover:bg-white py-2 px-10'
+              onClick={() => setLogin(true)}
             >
               Login
             </button>
@@ -86,6 +88,7 @@ const login = () => {
               <button
                 className='hover:underline decoration-primary text-sm'
                 type='submit'
+                onClick={() => setLogin(false)}
               >
                 Create Account
               </button>

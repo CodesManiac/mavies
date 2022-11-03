@@ -8,6 +8,7 @@ import {
   signOut,
   User,
 } from 'firebase/auth';
+import Swal from 'sweetalert2';
 
 interface UserAuth {
   user: User | null;
@@ -46,7 +47,14 @@ export const UserAuthProvider = ({ children }: UserAuthProviderProps) => {
         router.push('/');
         setLoading(false);
       })
-      .catch((error) => alert(error.message))
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Account not found',
+          confirmButtonColor: '#34275d',
+        });
+      })
       .finally(() => setLoading(false));
   };
 
@@ -59,7 +67,14 @@ export const UserAuthProvider = ({ children }: UserAuthProviderProps) => {
         router.push('/');
         setLoading(false);
       })
-      .catch((error) => alert(error.message))
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Account not found',
+          confirmButtonColor: '#34275d',
+        });
+      })
       .finally(() => setLoading(false));
   };
 
@@ -70,7 +85,14 @@ export const UserAuthProvider = ({ children }: UserAuthProviderProps) => {
       .then(() => {
         setUser(null);
       })
-      .catch((error) => alert(error.message))
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Unable to logout',
+          confirmButtonColor: '#34275d',
+        });
+      })
       .finally(() => setLoading(false));
   };
 

@@ -2,9 +2,12 @@ import Link from 'next/link';
 import { Notification, SearchNormal1, User } from 'iconsax-react';
 import { useEffect, useState } from 'react';
 import { headerData } from '../typings';
+import userAuth from '../hooks/userAuth';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { logout } = userAuth();
+
   const headerData: headerData[] = [
     {
       id: 1,
@@ -32,6 +35,7 @@ const Header = () => {
       url: '/',
     },
   ];
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -70,7 +74,9 @@ const Header = () => {
           color='#ffffff'
           className='sm hidden h-6 w-6 sm:inline'
         />
-        <p className='hidden lg:inline'>Kids</p>
+        <p className='hidden lg:inline' onClick={logout}>
+          Kids
+        </p>
         <Notification color='#ffffff' className='h-6 w-6 cursor-pointer' />
         <Link href='/account'>
           <User color='#ffffff' className=' rounded cursor-pointer' />
