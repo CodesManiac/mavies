@@ -1,23 +1,29 @@
 import { DirectInbox, SecuritySafe } from 'iconsax-react';
 import Link from 'next/link';
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
+type FormData = {
+  email: string;
+  password: string;
+};
 const login = () => {
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm<FormData>();
+  const [login, setLogin] = useState(false);
 
-  const onSubmit = (values: any) => {
-    const data = {
-      Email: values.email,
-      Password: values.password,
-    };
-    console.log('data', data);
+  const onSubmit: SubmitHandler<FormData> = async ({ email, password }) => {
+    if (login) {
+      await console.log('sign in');
+    } else {
+      await console.log('sign up');
+    }
   };
+
   return (
     <div className='h-screen'>
       <h1 className='bg-clip-text font-bold text-xl p-6 text-transparent bg-gradient-to-r from-[#ea4996] to-[#8d56f4]'>
@@ -45,6 +51,9 @@ const login = () => {
               className=' outline-none placeholder:font-medium text-sm'
             />
           </div>
+          <span className='text-red'>
+            {errors.email && errors.email.message}
+          </span>
 
           <div className='login-input'>
             <SecuritySafe size='20' color='#34275d' />
@@ -57,6 +66,9 @@ const login = () => {
               className='outline-none placeholder:font-medium text-sm'
             />
           </div>
+          <span className='text-red'>
+            {errors.password && errors.password.message}
+          </span>
           <div className='grid place-content-end text-sm'>
             <Link href={'/'}>Forgot password?</Link>
           </div>
@@ -70,8 +82,13 @@ const login = () => {
           </div>
           <div className='text-xs'>
             No Account? Click here to{' '}
-            <span className='underline decoration-primary text-sm'>
-              <Link href='/'>Create Account</Link>
+            <span>
+              <button
+                className='hover:underline decoration-primary text-sm'
+                type='submit'
+              >
+                Create Account
+              </button>
             </span>
           </div>
         </form>
