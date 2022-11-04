@@ -3,13 +3,16 @@ import { baseUrl } from '../constants/movie';
 import { Movie } from '../typings';
 import Image from 'next/image';
 import { InfoCircle, PlayCircle } from 'iconsax-react';
+import { modalState, movieState } from '../atoms/modalAtom';
+import { useRecoilState } from 'recoil';
 
 interface Props {
   netflixOriginals: Movie[];
 }
 const Banner = ({ netflixOriginals }: Props) => {
   const [movie, setMovie] = useState<Movie | null>(null);
-
+  const [showModal, setShowModal] = useRecoilState(modalState);
+  const [currentMovie, setCurrentMovie] = useRecoilState(movieState);
   useEffect(() => {
     setMovie(
       netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)]
@@ -37,7 +40,13 @@ const Banner = ({ netflixOriginals }: Props) => {
         <button className='banner-button bg-dark hover:bg-primary'>
           <PlayCircle size='24' color='#ffffff' /> Play
         </button>
-        <button className='banner-button bg-primary hover:bg-dark'>
+        <button
+          className='banner-button bg-primary hover:bg-dark'
+          onClick={() => {
+            setCurrentMovie(movie);
+            setShowModal(true);
+          }}
+        >
           <InfoCircle size='24' color='#ffffff' />
           More Details
         </button>
