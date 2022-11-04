@@ -7,6 +7,9 @@ import userAuth from '../hooks/userAuth';
 import { Movie } from '../typings';
 import requests from '../utils/requests';
 import { SpinnerDotted } from 'spinners-react';
+import { modalState } from './../atoms/modalAtom';
+import { useRecoilValue } from 'recoil';
+import Modal from '../components/Modal';
 interface Props {
   netflixOriginals: Movie[];
   trendingNow: Movie[];
@@ -28,6 +31,7 @@ const Home = ({
   documentaries,
 }: Props) => {
   const { loading } = userAuth();
+  const showModal = useRecoilValue(modalState);
   const spinnerStyle = {
     color: '#ffffff',
     display: 'grid',
@@ -57,7 +61,7 @@ const Home = ({
           <Row title='Documentaries' movies={documentaries} />
         </section>
       </main>
-      {/* Modal */}
+      {showModal && <Modal />}
     </div>
   );
 };
