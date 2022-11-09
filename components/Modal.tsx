@@ -1,11 +1,4 @@
-import {
-  AddCircle,
-  CloseCircle,
-  Like1,
-  PlayCircle,
-  VolumeHigh,
-  VolumeSlash,
-} from 'iconsax-react';
+import { CloseCircle } from 'iconsax-react';
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player/lazy';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -15,7 +8,6 @@ import { Genre, Movie, Element } from '../typings';
 
 const Modal = () => {
   const [showModal, setShowModal] = useRecoilState(modalState);
-  //   const [movie, setMovie] = useState<Movie | null>(null);
   const [trailer, setTrailer] = useState('');
   const [genres, setGenres] = useState<Genre[]>([]);
   const movie = useRecoilValue(movieState);
@@ -24,7 +16,7 @@ const Modal = () => {
   const handleClose = () => {
     setShowModal(false);
   };
-
+  console.log('moviesssss', movie);
   async function fetchMovie() {
     const data = await fetch(
       `https://api.themoviedb.org/3/${
@@ -42,10 +34,11 @@ const Modal = () => {
           confirmButtonColor: '#34275d',
         })
       );
-
+    console.log('dataaaa isss', data);
     if (data?.videos) {
+      console.log('datavideos', data.videos);
       const index = data.videos.results.findIndex(
-        (element: Element) => element.type === 'Trailer'
+        (element: Element) => element.type === 'Teaser'
       );
       setTrailer(data.videos?.results[index]?.key);
     }
@@ -66,10 +59,9 @@ const Modal = () => {
 
     fetchMovie();
   }, [movie]);
-  console.log('trailer is', trailer);
   return (
-    <div className='fixed left-0 right-0 w-full max-w-5xl mx-auto top-10 z-40'>
-      <div className='p-6 bg-dark text-white z-40 rounded-lg'>
+    <div className='fixed left-0 bottom-4 right-0 w-full max-w-5xl rounded-lg bg-dark text-white mx-auto top-0 z-40 max-h-screen overflow-hidden overflow-y-scroll scrollbar-hide'>
+      <div className=' '>
         <div className='absolute right-5 top-5 z-50 cursor-pointer'>
           <CloseCircle size='32' color='#ffffff' onClick={handleClose} />
         </div>
@@ -81,21 +73,29 @@ const Modal = () => {
             style={{ position: 'absolute', top: '0', left: '0' }}
             playing
             muted={muted}
+            controls={true}
           />
         </div>
-        <div className='flex gap-4 items-center mt-2'>
-          <button className='modal-button flex gap-x-2 bg-primary px-5 py-1.5 rounded-lg'>
-            <PlayCircle size='24' color='#ffffff' /> Play
-          </button>{' '}
-          <Like1 size='32' color='#ffffff' className='modal-button' />
-          <AddCircle size='32' color='#ffffff' className='modal-button' />
-          <button className='modal-button' onClick={() => setMuted(!muted)}>
-            {muted ? (
-              <VolumeSlash size='32' color='#ffffff' />
-            ) : (
-              <VolumeHigh size='32' color='#ffffff' />
-            )}
-          </button>
+
+        <div className='p-4 grid gap-y-2'>
+          <div className='flex gap-x-4 text-sm'>
+            <p className='text-primary'>{movie!.vote_average * 10}% Match</p>
+            <p>{movie!.first_air_date || movie!.release_date}</p>
+            <p>HD</p>
+          </div>
+          <p className='text-sm'>{movie?.overview}</p>
+          <p className='text-sm'>
+            <span className=''>Genre:</span>{' '}
+            {genres.map((genre) => genre.name).join(',')}
+          </p>
+          <p className='text-sm'>
+            <span className=''>Original Language: </span>
+            {movie?.original_language}
+          </p>
+          <p className='text-sm'>
+            <span className=''>Total Votes: </span>
+            {movie?.vote_count}
+          </p>
         </div>
       </div>
     </div>

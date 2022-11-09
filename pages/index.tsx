@@ -40,7 +40,9 @@ const Home = ({
   };
   if (loading) return <SpinnerDotted style={spinnerStyle} />;
   return (
-    <div className='relative h-screen lg:h-[140vh] bg-gradient-to-br from-primary/10 to-[#010511]'>
+    <div
+      className={`relative h-screen lg:h-[140vh] bg-gradient-to-br from-primary/10 to-[#010511]`}
+    >
       <Head>
         <title>Mavies</title>
         <link rel='icon' href='/favicon.ico' />
