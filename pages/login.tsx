@@ -30,7 +30,7 @@ const login = () => {
       <h1 className='bg-clip-text font-bold text-xl p-6 text-transparent bg-gradient-to-r from-[#ea4996] to-[#8d56f4]'>
         Mavies
       </h1>
-      <div className='grid content-center place-content-center text-dark'>
+      <div className='grid content-center place-content-center text-dark mt-10'>
         <form
           className='bg-white space-y-6 rounded-lg p-6'
           onSubmit={handleSubmit(onSubmit)}
