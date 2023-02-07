@@ -34,11 +34,14 @@ const Home = ({
   const showModal = useRecoilValue(modalState);
   const spinnerStyle = {
     color: '#ffffff',
-    display: 'grid',
-    alignItems: 'center',
-    justifyContent: 'center',
   };
-  if (loading) return <SpinnerDotted style={spinnerStyle} />;
+  if (loading)
+    return (
+      <div className='grid  w-screen h-screen content-center place-content-center '>
+        {' '}
+        <SpinnerDotted style={spinnerStyle} />
+      </div>
+    );
   return (
     <div
       className={`relative h-screen lg:h-[140vh] bg-gradient-to-br from-primary/10 to-[#010511]`}
@@ -50,7 +53,7 @@ const Home = ({
 
       <Header />
 
-      <main className='relative pl-4 md:pb-24 lg:space-y-24 lg:pl-16'>
+      <main className='relative  pl-4 md:pb-24 lg:space-y-24 lg:pl-16'>
         <Banner netflixOriginals={netflixOriginals} />
         <section className=' md:space-y-24'>
           <Row title='Trending Now' movies={trendingNow} />

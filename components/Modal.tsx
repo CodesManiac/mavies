@@ -41,6 +41,7 @@ const Modal = () => {
         (element: Element) => element.type === 'Teaser'
       );
       setTrailer(data.videos?.results[index]?.key);
+      console.log('trailer is now', data.videos?.results[index]?.key);
     }
     if (data?.genres) {
       setGenres(data.genres);
@@ -59,6 +60,7 @@ const Modal = () => {
 
     fetchMovie();
   }, [movie]);
+
   return (
     <div className='fixed left-0 bottom-4 right-0 w-full max-w-5xl rounded-lg bg-dark text-white mx-auto top-0 z-40 max-h-screen overflow-hidden overflow-y-scroll scrollbar-hide'>
       <div className=' '>
@@ -67,7 +69,10 @@ const Modal = () => {
         </div>
         <div className='relative pt-[56.25%]'>
           <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${trailer}`}
+            // url={`https://www.youtube.com/watch?v=${trailer}`}
+            // url='https://103.152.18.18/player?id=tt13640696'
+            // url={`https://2embed.org/embed/movie?imdb=tt6806448`}
+            url={`https://www.youtube.com/watch?v=83ZSwO3BdHk&t=647s`}
             width='100%'
             height='100%'
             style={{ position: 'absolute', top: '0', left: '0' }}

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Notification, SearchNormal1, User } from 'iconsax-react';
+import { Logout, Notification, SearchNormal1, User } from 'iconsax-react';
 import { useEffect, useState } from 'react';
 import { headerData } from '../typings';
 import userAuth from '../hooks/userAuth';
@@ -11,26 +11,21 @@ const Header = () => {
   const headerData: headerData[] = [
     {
       id: 1,
-      title: 'Home',
-      url: '/',
-    },
-    {
-      id: 2,
       title: 'Movies',
       url: '/',
     },
     {
-      id: 3,
+      id: 2,
       title: 'Tv Shows',
       url: '/',
     },
     {
-      id: 4,
+      id: 3,
       title: 'New & Popular',
       url: '/',
     },
     {
-      id: 5,
+      id: 4,
       title: 'My List',
       url: '/',
     },
@@ -53,7 +48,7 @@ const Header = () => {
   }, []);
   return (
     <header className={`${isScrolled && 'bg-main-background'}`}>
-      <div className='flex justify-between items-center '>
+      <div className='flex justify-between items-center gap-8'>
         <h1 className='bg-clip-text font-bold text-xl text-transparent bg-gradient-to-r from-[#ea4996] to-[#8d56f4]'>
           Mavies
         </h1>
@@ -74,8 +69,8 @@ const Header = () => {
           color='#ffffff'
           className='sm hidden h-6 w-6 sm:inline'
         />
-        <p className='hidden lg:inline' onClick={logout}>
-          Kids
+        <p className='hidden lg:inline cursor-pointer' onClick={logout}>
+          <Logout size='32' color='#ffffff' />
         </p>
         <Notification color='#ffffff' className='h-6 w-6 cursor-pointer' />
         <Link href='/account'>
