@@ -51,7 +51,7 @@ export const UserAuthProvider = ({ children }: UserAuthProviderProps) => {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Account not found',
+          text: error.message.slice(9),
           confirmButtonColor: '#34275d',
         });
       })
@@ -71,7 +71,7 @@ export const UserAuthProvider = ({ children }: UserAuthProviderProps) => {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Account not found',
+          text: error.message.slice(9),
           confirmButtonColor: '#34275d',
         });
       })
@@ -89,7 +89,7 @@ export const UserAuthProvider = ({ children }: UserAuthProviderProps) => {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Unable to logout',
+          text: error.message,
           confirmButtonColor: '#34275d',
         });
       })
