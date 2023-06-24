@@ -38,7 +38,7 @@ const Modal = () => {
     if (data?.videos) {
       console.log('datavideos', data.videos);
       const index = data.videos.results.findIndex(
-        (element: Element) => element.type === 'Teaser'
+        (element: Element) => element.type === 'Trailer'
       );
       setTrailer(data.videos?.results[index]?.key);
       console.log('trailer is now', data.videos?.results[index]?.key);
@@ -62,7 +62,7 @@ const Modal = () => {
   }, [movie]);
 
   return (
-    <div className='fixed left-0 bottom-4 right-0 w-full max-w-5xl rounded-lg bg-dark text-white mx-auto top-0 z-40 max-h-screen overflow-hidden overflow-y-scroll scrollbar-hide'>
+    <div className='fixed grid place-content-center left-0 bottom-4 right-0 w-full max-w-5xl rounded-lg bg-dark text-white mx-auto top-0 z-40 max-h-screen overflow-hidden overflow-y-scroll scrollbar-hide'>
       <div className=' '>
         <div className='absolute right-5 top-5 z-50 cursor-pointer'>
           <CloseCircle size='32' color='#ffffff' onClick={handleClose} />
