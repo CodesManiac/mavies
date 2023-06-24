@@ -3,10 +3,12 @@ import { Logout, Notification, SearchNormal1, User } from 'iconsax-react';
 import { useEffect, useState } from 'react';
 import { headerData } from '../typings';
 import userAuth from '../hooks/userAuth';
+import { useUserLocation } from '../utils/userLocation';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { logout } = userAuth();
+  const currentLocation: string = useUserLocation();
 
   const headerData: headerData[] = [
     {
@@ -53,7 +55,7 @@ const Header = () => {
           Mavies
         </h1>
         <div className='hidden md:flex md:gap-5'>
-          {headerData.map((data) => (
+          {headerData.filter((element) => currentLocation === 'Nigeria' || element.id !== 3).map((data) => (
             <a
               key={data.id}
               href={data.url}

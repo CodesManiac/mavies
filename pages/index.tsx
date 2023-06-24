@@ -44,7 +44,9 @@ const Home = ({
     );
   return (
     <div
-      className={`relative h-screen lg:h-[140vh] bg-gradient-to-br from-primary/10 to-[#010511]`}
+      className={`relative h-screen lg:h-[140vh] bg-gradient-to-br from-primary/10 to-[#010511] ${
+        showModal && 'h-screen overflow-hidden'
+      }`}
     >
       <Head>
         <title>Mavies</title>
