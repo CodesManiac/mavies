@@ -12,6 +12,7 @@ export interface Movie {
     title: string
     backdrop_path: string
     media_type?: string
+    adult?: boolean
     release_date?: string
     first_air_date: string
     genre_ids: number[]
@@ -27,6 +28,15 @@ export interface Movie {
     vote_count: number
 }
 
+export type SearchCategory = 'all' | 'movie' | 'tv'
+
+export interface SearchResponse {
+    results: Movie[]
+    page: number
+    totalPages: number
+    hasMore: boolean
+}
+
 export interface Element {
     type:
     | 'Bloopers'
@@ -35,4 +45,5 @@ export interface Element {
     | 'Clip'
     | 'Trailer'
     | 'Teaser'
+    key: string
 }

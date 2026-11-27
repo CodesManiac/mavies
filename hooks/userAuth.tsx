@@ -1,125 +1,216 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { auth } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   User,
 } from 'firebase/auth';
-import Swal from 'sweetalert2';
 
 interface UserAuth {
   user: User | null;
+  initializing: boolean;
+  submitting: boolean;
+  error: string | null;
+  notice: string | null;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
+  clearMessages: () => void;
   logout: () => Promise<void>;
-  error: string | null;
-  loading: boolean;
 }
 
 interface UserAuthProviderProps {
   children: React.ReactNode;
 }
 
+const getErrorCode = (error: unknown): string => {
+  if (typeof error !== 'object' || error === null || !('code' in error)) {
+    return '';
+  }
+
+  const code = (error as { code?: unknown }).code;
+  return typeof code === 'string' ? code : '';
+};
+
+const getAuthErrorMessage = (error: unknown): string => {
+  switch (getErrorCode(error)) {
+    case 'auth/invalid-email':
+      return 'Enter a valid email address.';
+    case 'auth/missing-password':
+      return 'Enter your password.';
+    case 'auth/weak-password':
+      return 'Use a password with at least 6 characters.';
+    case 'auth/email-already-in-use':
+      return 'An account already exists for this email. Sign in instead.';
+    case 'auth/invalid-credential':
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+      return 'The email or password is incorrect.';
+    case 'auth/too-many-requests':
+      return 'Too many attempts. Please try again later.';
+    case 'auth/network-request-failed':
+      return 'Check your connection and try again.';
+    case 'auth/operation-not-allowed':
+      return 'This sign-in method is currently unavailable.';
+    default:
+      return 'Something went wrong. Please try again.';
+  }
+};
+
 const UserAuthContext = createContext<UserAuth>({
   user: null,
+  initializing: true,
+  submitting: false,
+  error: null,
+  notice: null,
   signUp: async () => {},
   signIn: async () => {},
+  resetPassword: async () => {},
+  clearMessages: () => {},
   logout: async () => {},
-  error: null,
-  loading: false,
 });
+
 export const UserAuthProvider = ({ children }: UserAuthProviderProps) => {
-  const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [error, setError] = useState(null);
+  const [initializing, setInitializing] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const submittingRef = useRef(false);
   const router = useRouter();
 
-  const signUp = async (email: string, password: string) => {
-    setLoading(true);
-
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUser(userCredential.user);
-        router.push('/');
-        setLoading(false);
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error.message.slice(9),
-          confirmButtonColor: '#34275d',
-        });
-      })
-      .finally(() => setLoading(false));
+  const clearMessages = () => {
+    setError(null);
+    setNotice(null);
   };
 
-  const signIn = async (email: string, password: string) => {
-    setLoading(true);
+  const runAuthAction = async (
+    action: () => Promise<void>,
+    successNotice?: string
+  ) => {
+    if (submittingRef.current) {
+      return;
+    }
 
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        setUser(userCredential.user);
-        router.push('/');
-        setLoading(false);
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error.message.slice(9),
-          confirmButtonColor: '#34275d',
-        });
-      })
-      .finally(() => setLoading(false));
+    submittingRef.current = true;
+    setSubmitting(true);
+    setError(null);
+    setNotice(null);
+
+    try {
+      await action();
+      if (successNotice) {
+        setNotice(successNotice);
+      }
+    } catch (caught) {
+      setError(getAuthErrorMessage(caught));
+    } finally {
+      submittingRef.current = false;
+      setSubmitting(false);
+    }
   };
+
+  const signUp = (email: string, password: string) =>
+    runAuthAction(async () => {
+      const credential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      setUser(credential.user);
+      await router.replace('/');
+    });
+
+  const signIn = (email: string, password: string) =>
+    runAuthAction(async () => {
+      const credential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      setUser(credential.user);
+      await router.replace('/');
+    });
+
+  const resetPassword = (email: string) =>
+    runAuthAction(async () => {
+      try {
+        await sendPasswordResetEmail(auth, email);
+      } catch (caught) {
+        if (getErrorCode(caught) !== 'auth/user-not-found') {
+          throw caught;
+        }
+      }
+    }, 'If an account exists for that email, a reset link has been sent.');
 
   const logout = async () => {
-    setLoading(true);
+    if (submittingRef.current) {
+      return;
+    }
 
-    signOut(auth)
-      .then(() => {
-        setUser(null);
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: error.message,
-          confirmButtonColor: '#34275d',
-        });
-      })
-      .finally(() => setLoading(false));
+    submittingRef.current = true;
+    setSubmitting(true);
+    setError(null);
+    setNotice(null);
+
+    try {
+      await signOut(auth);
+      setUser(null);
+      await router.replace('/login');
+    } catch (caught) {
+      setError(getAuthErrorMessage(caught));
+    } finally {
+      submittingRef.current = false;
+      setSubmitting(false);
+    }
   };
 
-  useEffect(
-    () =>
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setUser(user);
-          setLoading(false);
-        } else {
-          setUser(null);
-          setLoading(true);
-          router.push('/login');
-        }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (nextUser) => {
+        setUser(nextUser);
+        setInitializing(false);
+      },
+      () => {
+        setError('Unable to restore your session. Please try again.');
+        setInitializing(false);
+      }
+    );
 
-        setInitialLoading(false);
-      }),
-    [auth]
-  );
-  const memoedValue = useMemo(
-    () => ({ user, signUp, signIn, error, loading, logout }),
-    [user, loading, error]
-  );
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    if (initializing) {
+      return;
+    }
+
+    if (user && router.pathname === '/login') {
+      void router.replace('/');
+    }
+  }, [initializing, user, router]);
 
   return (
-    <UserAuthContext.Provider value={memoedValue}>
-      {!initialLoading && children}
+    <UserAuthContext.Provider
+      value={{
+        user,
+        initializing,
+        submitting,
+        error,
+        notice,
+        signUp,
+        signIn,
+        resetPassword,
+        clearMessages,
+        logout,
+      }}
+    >
+      {children}
     </UserAuthContext.Provider>
   );
 };

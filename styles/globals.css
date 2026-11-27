@@ -32,3 +32,54 @@
         @apply hover:scale-105 transition duration-200 ease-out cursor-pointer;
     }  
 }
+
+.modal-shell {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 1rem);
+    max-height: calc(100vh - 1rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transform: translate(-50%, -50%);
+}
+
+@supports (height: 100dvh) {
+    .modal-shell {
+        max-height: calc(100dvh - 1rem);
+    }
+}
+
+.search-shell {
+    height: 100vh;
+    height: 100dvh;
+}
+
+.search-header {
+    padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+}
+
+.search-results {
+    padding-bottom: max(2rem, env(safe-area-inset-bottom, 0px));
+}
+
+.trailer-shell:fullscreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    padding-top: 0;
+    background: #000;
+}
+
+.trailer-shell:fullscreen .trailer-frame {
+    position: relative;
+    inset: auto;
+    width: min(100vw, calc(100vh * 16 / 9));
+    height: min(100vh, calc(100vw * 9 / 16));
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 16 / 9;
+}

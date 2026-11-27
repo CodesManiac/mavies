@@ -6,27 +6,32 @@
     "start": "next start"
   },
   "dependencies": {
-    "axios": "^1.4.0",
-    "firebase": "^9.12.1",
-    "iconsax-react": "^0.0.8",
-    "next": "latest",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
+    "firebase": "13.4.0",
+    "iconsax-react": "0.0.8",
+    "next": "15.5.29",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-hook-form": "^7.37.0",
     "react-player": "^2.11.0",
     "recoil": "^0.7.6",
-    "spinners-react": "^1.0.7",
-    "sweetalert2": "^11.6.5",
     "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
     "@types/node": "17.0.35",
-    "@types/react": "18.0.9",
-    "@types/react-dom": "18.0.5",
-    "autoprefixer": "^10.4.7",
-    "postcss": "^8.4.14",
+    "@types/react": "18.3.32",
+    "@types/react-dom": "18.3.7",
+    "autoprefixer": "10.7.0",
+    "postcss": "8.5.33",
     "tailwind-scrollbar": "^2.0.1",
-    "tailwindcss": "^3.1.2",
+    "tailwindcss": "3.4.19",
     "typescript": "4.7.2"
+  },
+  "resolutions": {
+    "next/postcss": "8.5.33",
+    "websocket-driver": "0.7.5",
+    "@grpc/grpc-js": "1.13.6",
+    "braces": "3.0.3",
+    "tailwindcss/micromatch/picomatch": "2.3.2",
+    "tailwindcss/chokidar/anymatch/picomatch": "2.3.2"
   }
 }
